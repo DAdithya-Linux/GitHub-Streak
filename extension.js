@@ -112,7 +112,7 @@ class Indicator extends PanelMenu.Button {
     }
 
     // Refresh every 30 minutes
-    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1800, () => {
+    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 60, () => {
         this._refresh();
         return GLib.SOURCE_REMOVE;
     });
@@ -131,7 +131,10 @@ export default class GitHubStreakExtension extends Extension {
     }
 
     disable() {
+    if (this._indicator) {
+        // This is crucial to stop the background loop when you turn it off
         this._indicator.destroy();
         this._indicator = null;
     }
+}
 }
