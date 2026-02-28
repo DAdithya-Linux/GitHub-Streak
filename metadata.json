@@ -1,0 +1,8 @@
+{
+  "name": "GitHub Streak",
+  "description": "Tracks daily GitHub contributions.",
+  "uuid": "streak-tracker@dadithya01.github.com",
+  "shell-version": [
+    "49"
+  ]
+}
