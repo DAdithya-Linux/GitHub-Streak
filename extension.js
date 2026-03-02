@@ -34,18 +34,14 @@ class Indicator extends PanelMenu.Button {
     }
 
     _refresh() {
-    // 1. Define the command
     const query = `query { viewer { contributionsCollection { contributionCalendar { weeks { contributionDays { contributionCount date } } } } } }`;
     
-    // 2. Setup the process (don't run it yet)
     let proc = new Gio.Subprocess({
         argv: ['gh', 'api', 'graphql', '-f', `query=${query}`],
         flags: Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE,
     });
     proc.init(null);
 
-    // 3. Start the process ASYNCHRONOUSLY
-    // This tells GNOME: "Run this in the background and call me when done"
     proc.communicate_utf8_async(null, null, (process, result) => {
         try {
             let [ok, stdout, stderr] = process.communicate_utf8_finish(result);
@@ -66,8 +62,7 @@ class Indicator extends PanelMenu.Button {
         }
     });
 
-    // 4. Set the timer for the NEXT refresh (e.g., 900 seconds)
-    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 600, () => {
+    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 300, () => {
         this._refresh();
         return GLib.SOURCE_REMOVE;
     });
@@ -87,7 +82,6 @@ export default class GitHubStreakExtension extends Extension {
 
     disable() {
     if (this._indicator) {
-        // This is crucial to stop the background loop when you turn it off
         this._indicator.destroy();
         this._indicator = null;
     }
