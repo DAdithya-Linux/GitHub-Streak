@@ -62,7 +62,7 @@ class Indicator extends PanelMenu.Button {
         }
     });
 
-    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 300, () => {
+    this._timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 900, () => {
         this._refresh();
         return GLib.SOURCE_REMOVE;
     });
